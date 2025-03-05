@@ -21,3 +21,5 @@ Basic installation steps:
 The instructions in the `README.md` files are written with the my personal preferences in mind. You may need to adjust them to suit your needs by reading the official documentation of the application.
 
 ## Applications
+
+- [Traefik](traefik/README.md) - Modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
