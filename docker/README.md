@@ -23,3 +23,4 @@ The instructions in the `README.md` files are written with the my personal prefe
 ## Applications
 
 - [Traefik](traefik/README.md) - Modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
+- [Vaultwarden](vaultwarden/README.md) - Unofficial Bitwarden compatible server written in Rust.
