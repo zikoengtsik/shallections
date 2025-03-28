@@ -1,0 +1,65 @@
+name: grafana
+
+networks:
+  ingress-traefik:
+    external: true
+  default: {}
+
+services:
+  grafana:
+    image: ${GRAFANA_APP_IMAGE}
+    container_name: ${GRAFANA_APP_CONTAINER}
+    restart: always
+    user: '0'
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    networks:
+      - ingress-traefik
+      - default
+    environment:
+      - TZ=${TIMEZONE}
+      # Server
+      - GF_SERVER_ROOT_URL=https://${GRAFANA_APP_DOMAIN}
+      # Database
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=${GRAFANA_POSTGRES_CONTAINER}:5432
+      - GF_DATABASE_USER=${GRAFANA_POSTGRES_USER}
+      - GF_DATABASE_PASSWORD=${GRAFANA_POSTGRES_PASSWORD}
+      - GF_DATABASE_NAME=${GRAFANA_POSTGRES_DB}
+    volumes:
+      - ${ROOT_DIR}/data:/var/lib/grafana
+    healthcheck:
+      test: curl -fSs localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 15s
+      retries: 3
+      start_period: 30s
+    labels:
+      - traefik.enable=true
+      # routers
+      - traefik.http.routers.grafana-app.rule=Host(`${GRAFANA_APP_DOMAIN}`)
+      - traefik.http.routers.grafana-app.entrypoints=web,websecure
+      - traefik.http.routers.grafana-app.service=grafana-app@docker
+      # services
+      - traefik.http.services.grafana-app.loadbalancer.server.port=3000
+
+  postgres:
+    image: ${GRAFANA_POSTGRES_IMAGE}
+    container_name: ${GRAFANA_POSTGRES_CONTAINER}
+    restart: always
+    networks:
+      - default
+    environment:
+      - POSTGRES_USER=${GRAFANA_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${GRAFANA_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${GRAFANA_POSTGRES_DB}
+    volumes:
+      - ${ROOT_DIR}/pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

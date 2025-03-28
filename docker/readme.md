@@ -25,5 +25,6 @@ For advanced configurations, refer to the official documentation of respective p
 ## Applications
 
 - [Gitea](gitea/readme.md) - Git with a cup of tea.
+- [Grafana](grafana/readme.md) - Platform for visualizing metrics, logs, and traces from multiple sources.
 - [Traefik](traefik/readme.md) - Modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
 - [Vaultwarden](vaultwarden/readme.md) - Unofficial Bitwarden compatible server written in Rust.
