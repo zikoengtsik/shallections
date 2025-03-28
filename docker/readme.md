@@ -23,3 +23,5 @@ The instructions in the `readme.md` files are written with the my personal prefe
 For advanced configurations, refer to the official documentation of respective projects.
 
 ## Applications
+
+- [Traefik](traefik/readme.md) - Modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
